@@ -1,6 +1,7 @@
-package com.ouhlar.chatty;
+package com.ouhlar.chatty.dto;
 
-public class MessageChattyPojo {
+public class MessageDto {
+
     private String message;
     private String sender;
 
@@ -22,7 +23,7 @@ public class MessageChattyPojo {
 
     @Override
     public String toString() {
-        return "MessageChattyPojo{" +
+        return "MessageDto{" +
                 "message='" + message + '\'' +
                 ", sender='" + sender + '\'' +
                 '}';
