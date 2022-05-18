@@ -1,32 +1,9 @@
 package com.ouhlar.chatty.storage;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.ouhlar.chatty.dto.Topic;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class RegisteredTopics {
-
-    private static RegisteredTopics instance;
-    private Set<String> topics;
-
-    private RegisteredTopics() {
-        topics = new HashSet<>();
-    }
-
-    public static synchronized RegisteredTopics getInstance() {
-        if (instance == null) {
-            instance = new RegisteredTopics();
-        }
-        return instance;
-    }
-
-    public Set<String> getTopics() {
-        return topics;
-    }
-
-    public void setTopic(String topicName) throws Exception {
-        if (topics.contains(topicName)) {
-            throw new Exception("Topic already exists with topic name: " + topicName);
-        }
-        topics.add(topicName);
-    }
+@Repository
+public interface RegisteredTopics extends JpaRepository<Topic, Long> {
 }
