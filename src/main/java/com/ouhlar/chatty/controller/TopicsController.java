@@ -1,35 +1,35 @@
 package com.ouhlar.chatty.controller;
 
-import com.ouhlar.chatty.storage.RegisteredTopics;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.ouhlar.chatty.dto.Topic;
+import com.ouhlar.chatty.services.TopicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
-@CrossOrigin
 public class TopicsController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TopicsController.class);
+    @Autowired
+    private TopicService topicService;
 
-    @GetMapping("/create-topic/{topicName}")
-    public ResponseEntity<Void> register(@PathVariable String topicName) {
-        LOGGER.info("handling creating topic request: " + topicName);
-        try {
-            RegisteredTopics.getInstance().setTopic(topicName);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().build();
+    @RequestMapping("/getAllTopics")
+    public List<Topic> getAllTopics() {
+        return topicService.getAllTopics();
     }
 
-    @GetMapping("/getAllTopics")
-    public Set<String> getAllTopics() {
-        return RegisteredTopics.getInstance().getTopics();
+    @RequestMapping("/getTopic/{id}")
+    public Topic getTopic(@PathVariable long id) {
+        return topicService.getTopic(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addTopic/{topicName}")
+    public String addUser(@PathVariable String topicName) {
+        return topicService.addTopic(topicName);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteTopic/{id}")
+    public String deleteTopic(@PathVariable long id) {
+        return topicService.deleteTopic(id);
     }
 }

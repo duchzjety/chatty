@@ -1,35 +1,38 @@
 package com.ouhlar.chatty.controller;
 
-import com.ouhlar.chatty.storage.RegisteredUsers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.ouhlar.chatty.dto.User;
+import com.ouhlar.chatty.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Set;
 
 @RestController
-@CrossOrigin
 public class UsersController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
 
-    @GetMapping("/registration/{userName}")
-    public ResponseEntity<Void> register(@PathVariable String userName) {
-        LOGGER.info("handling register user request: " + userName);
-        try {
-            RegisteredUsers.getInstance().setUser(userName);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().build();
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("/getAllUsers")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @GetMapping("/getAllUsers")
-    public Set<String> getAllUsers() {
-        return RegisteredUsers.getInstance().getUsers();
+    @RequestMapping("/getUser/{id}")
+    public User getuser(@PathVariable long id) {
+        return userService.getUser(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addUser/{userName}")
+    public String addUser(@PathVariable String userName) {
+        return userService.addUser(userName);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser/{id}")
+    public String deleteUser(@PathVariable long id) {
+        return userService.deleteUser(id);
     }
 }
