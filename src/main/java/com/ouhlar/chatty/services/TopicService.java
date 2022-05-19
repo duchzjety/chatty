@@ -4,9 +4,11 @@ import com.ouhlar.chatty.dto.Topic;
 import com.ouhlar.chatty.exceptions.TopicNotFoundException;
 import com.ouhlar.chatty.storage.RegisteredTopics;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TopicService {
     @Autowired
     RegisteredTopics registeredTopics;
@@ -23,11 +25,11 @@ public class TopicService {
         Topic newTopic = new Topic();
         newTopic.setTopic(topicName);
         registeredTopics.save(newTopic);
-        return "User " + newTopic.getTopic() + " successfuly added";
+        return "Topic " + newTopic.getTopic() + " successfuly added";
     }
 
     public String deleteTopic(long id) {
         registeredTopics.deleteById(id);
-        return "User with id" + id + " was deleted";
+        return "Topic with id" + id + " was deleted";
     }
 }
